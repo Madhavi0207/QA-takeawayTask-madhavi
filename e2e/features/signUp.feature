@@ -4,7 +4,8 @@ I want to sign up into the website
 So that I can use the website
 
 Scenario: Sign up
-Given The user is in the login page
+Given The user is in the sign up page
+
 When The user enters the given details for user details:
  | firstname | lastName | Email                     | phoneNumber | password    | confirmPassword |
  | Madhavi   | Paudel   | madhavipaudel86@gmail.com | 9866758577  | Madhavi@123 | Madhavi@123     |
