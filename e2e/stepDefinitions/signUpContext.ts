@@ -15,13 +15,13 @@ When(
   },
 );
 When(
-  "The user enters the agency details",
+  "The user enters the agency details:",
   async function (this: CustomWorld, dataTable: DataTable) {
     console.log("okay");
   },
 );
 When(
-  "The user enters experience details: ",
+  "The user enters experience details:",
   async function (this: CustomWorld, dataTable: DataTable) {
     console.log("okay");
   },
