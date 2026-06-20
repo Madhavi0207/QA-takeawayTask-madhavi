@@ -1,17 +1,14 @@
 import { IWorldOptions, setWorldConstructor, World } from "@cucumber/cucumber";
 
 import { Browser, BrowserContext, Page } from "@playwright/test";
-
-// import { LoginPage } from "../pageObject/LoginPage";
-// import { CardPage } from "../pageObject/CardPage";
+import { SignUpPage } from "../pageObject/SignUpPage";
 
 export class CustomWorld extends World {
   browser!: Browser;
   context!: BrowserContext;
   page!: Page;
 
-  //   loginPage!: LoginPage;
-  //   cardPage!: CardPage;
+  signUpPage!: SignUpPage;
 
   users: Record<string, unknown> = {};
   meetings: Record<string, unknown> = {};
@@ -22,7 +19,7 @@ export class CustomWorld extends World {
   }
 
   initPages(): void {
-    // this.loginPage = new LoginPage(this.page);
+    this.signUpPage = new SignUpPage(this.page);
   }
 
   setData(key: string, value: unknown): void {
