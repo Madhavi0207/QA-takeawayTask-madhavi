@@ -53,7 +53,7 @@ export class SignUpPage {
   private readonly submitButton: Locator;
 
   // navigation to profile page
-  private readonly dashboardPage: Locator;
+  public readonly dashboardPage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -61,38 +61,44 @@ export class SignUpPage {
 
     // Get started with policy terms and condition
 
-    this.getStartedButton = page.getByRole("button", { name: "Get Started" });
-    this.policyCheckBox = page.getByRole("checkbox", {
+    this.getStartedButton = this.page.getByRole("button", {
+      name: "Get Started",
+    });
+    this.policyCheckBox = this.page.getByRole("checkbox", {
       name: "I agree to theTerms of Service and Privacy Policy",
     });
 
-    this.contiuneButton = page.getByRole("button", { name: "Continue" });
+    this.contiuneButton = this.page.getByRole("button", { name: "Continue" });
 
     // Set up your account
 
-    this.firstName = page.getByRole("textbox", { name: "First Name" });
-    this.lastName = page.getByRole("textbox", { name: "Last Name" });
-    this.emailField = page.getByRole("textbox", { name: "Email Address" });
-    this.phoneNumber = page.getByRole("textbox", { name: "Phone Number" });
-    this.passwordSelector = page.locator('input[name="password"]');
-    this.confirmPassword = page.locator('input[name="confirmPassword"]');
-    this.nextButtonSelector = page.getByRole("button", { name: "Next" });
+    this.firstName = this.page.getByRole("textbox", { name: "First Name" });
+    this.lastName = this.page.getByRole("textbox", { name: "Last Name" });
+    this.emailField = this.page.getByRole("textbox", { name: "Email Address" });
+    this.phoneNumber = this.page.getByRole("textbox", { name: "Phone Number" });
+    this.passwordSelector = this.page.locator('input[name="password"]');
+    this.confirmPassword = this.page.locator('input[name="confirmPassword"]');
+    this.nextButtonSelector = this.page.getByRole("button", { name: "Next" });
 
     // One time code verification
 
-    this.codeVerification = page.locator('input[autocomplete="one-time-code"]');
+    this.codeVerification = this.page.locator(
+      'input[autocomplete="one-time-code"]',
+    );
 
     //Agency Details
 
-    this.agencyName = page.getByPlaceholder("Enter Agency Name");
-    this.agencyRole = page.getByRole("textbox", { name: "Role in Agency" });
-    this.agencyEmail = page.locator('input[name="agency_email"]');
-    this.agencyWebsite = page.getByRole("textbox", { name: "Website" });
-    this.agencyAddress = page.locator('input[name="agency_address"]');
-    this.regionOfOperation = page.getByRole("combobox", {
+    this.agencyName = this.page.getByPlaceholder("Enter Agency Name");
+    this.agencyRole = this.page.getByRole("textbox", {
+      name: "Role in Agency",
+    });
+    this.agencyEmail = this.page.locator('input[name="agency_email"]');
+    this.agencyWebsite = this.page.getByRole("textbox", { name: "Website" });
+    this.agencyAddress = this.page.locator('input[name="agency_address"]');
+    this.regionOfOperation = this.page.getByRole("combobox", {
       name: "Select Your Region of Operation",
     });
-    this.nextSubmitButton = page.getByRole("button", { name: "Next" });
+    this.nextSubmitButton = this.page.getByRole("button", { name: "Next" });
 
     //Professional Details
 
@@ -136,6 +142,9 @@ export class SignUpPage {
 
   async navigateToLandingPage(): Promise<void> {
     await this.page.goto(`${this.baseUrl}`);
+    await this.getStartedButton.click();
+    await this.policyCheckBox.click();
+    await this.contiuneButton.click();
   }
 
   async enterUserDetails(dataTable: DataTable): Promise<void> {
@@ -154,7 +163,7 @@ export class SignUpPage {
     ]);
   }
 
-  async enterAgencyDetails(dataTable: any) {
+  async enterAgencyDetails(dataTable: DataTable) {
     const agency = dataTable.hashes()[0];
 
     await this.agencyName.fill(agency.agencyName);
@@ -168,7 +177,7 @@ export class SignUpPage {
       this.nextSubmitButton.click(),
     ]);
   }
-  async enterExperienceDetails(dataTable: any) {
+  async enterExperienceDetails(dataTable: DataTable) {
     const exp = dataTable.hashes()[0];
 
     await this.yearsOfExperience.fill(exp.yearsOfExperience);
@@ -181,7 +190,7 @@ export class SignUpPage {
       this.experienceNextBtn,
     ]);
   }
-  async enterBusinessDetails(dataTable: any) {
+  async enterBusinessDetails(dataTable: DataTable) {
     const biz = dataTable.hashes()[0];
 
     await this.businessRegistrationNum.fill(biz.RegistrationNum);
@@ -192,9 +201,5 @@ export class SignUpPage {
       this.page.waitForLoadState("networkidle"),
       this.submitButton,
     ]);
-  }
-
-  async dashboardSection(): Promise<void> {
-    await expect(this.dashboardPage).toBeVisible();
   }
 }

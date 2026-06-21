@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:e2e": "cucumber-js e2e/features/**/*.feature --require-module ts-node/register --require e2e/stepDefinitions/**/*.ts"
+    "test:e2e": "cucumber-js e2e/features/**/*.feature --require-module ts-node/register --require e2e/stepDefinitions/**/*.ts --require cucumber.conf.js"
   },
   "keywords": [],
   "author": "",
