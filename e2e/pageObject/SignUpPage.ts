@@ -1,14 +1,17 @@
 import { DataTable } from "@cucumber/cucumber";
-import { Locator, Page } from "playwright/test";
+import { expect, Locator, Page } from "playwright/test";
 
 export class SignUpPage {
   private readonly page: Page;
   public readonly baseUrl: String;
 
+  //Get started with privacy terms and condition
+
   private readonly getStartedButton: Locator;
   private readonly policyCheckBox: Locator;
   private readonly contiuneButton: Locator;
 
+  //Set up your account
   private readonly firstName: Locator;
   private readonly lastName: Locator;
   private readonly emailField: Locator;
@@ -17,7 +20,11 @@ export class SignUpPage {
   private readonly confirmPassword: Locator;
   private readonly nextButtonSelector: Locator;
 
+  //one time code verification
+
   private readonly codeVerification: Locator;
+
+  //agency details
 
   private readonly agencyName: Locator;
   private readonly agencyRole: Locator;
@@ -27,6 +34,8 @@ export class SignUpPage {
   private readonly regionOfOperation: Locator;
   private readonly nextSubmitButton: Locator;
 
+  //Professional Experience
+
   private readonly yearsOfExperience: Locator;
   private readonly recuritedStudentNo: Locator;
   private readonly focusArea: Locator;
@@ -34,12 +43,23 @@ export class SignUpPage {
   private readonly careerCounselingCheckbox: Locator;
   private readonly experienceNextBtn: Locator;
 
+  //Verification and Preferences
+
   private readonly businessRegistrationNum: Locator;
   private readonly preferredCountries: Locator;
+  private readonly preferredInstitutionType: Locator;
+  private readonly certificationDetails: Locator;
+  private readonly uploadFile: Locator;
+  private readonly submitButton: Locator;
+
+  // navigation to profile page
+  private readonly dashboardPage: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.baseUrl = "https://authorized-partner.vercel.app/";
+
+    // Get started with policy terms and condition
 
     this.getStartedButton = page.getByRole("button", { name: "Get Started" });
     this.policyCheckBox = page.getByRole("checkbox", {
@@ -47,6 +67,8 @@ export class SignUpPage {
     });
 
     this.contiuneButton = page.getByRole("button", { name: "Continue" });
+
+    // Set up your account
 
     this.firstName = page.getByRole("textbox", { name: "First Name" });
     this.lastName = page.getByRole("textbox", { name: "Last Name" });
@@ -56,7 +78,11 @@ export class SignUpPage {
     this.confirmPassword = page.locator('input[name="confirmPassword"]');
     this.nextButtonSelector = page.getByRole("button", { name: "Next" });
 
+    // One time code verification
+
     this.codeVerification = page.locator('input[autocomplete="one-time-code"]');
+
+    //Agency Details
 
     this.agencyName = page.getByPlaceholder("Enter Agency Name");
     this.agencyRole = page.getByRole("textbox", { name: "Role in Agency" });
@@ -68,9 +94,12 @@ export class SignUpPage {
     });
     this.nextSubmitButton = page.getByRole("button", { name: "Next" });
 
+    //Professional Details
+
     this.yearsOfExperience = this.page.getByRole("combobox", {
       name: "Years of Experience",
     });
+    page.locator('input[type="file"]');
     this.recuritedStudentNo = this.page.getByRole("spinbutton", {
       name: "Number of Students Recruited Annually",
     });
@@ -83,11 +112,89 @@ export class SignUpPage {
     });
     this.experienceNextBtn = this.page.locator("button[type='submit']");
 
+    // Business Details and Preferences
+
     this.businessRegistrationNum = this.page.getByRole("textbox", {
       name: "Business Registration Number",
     });
     this.preferredCountries = this.page.getByRole("combobox", {
       name: "Preferred Countries",
     });
+    this.preferredInstitutionType = this.page.getByRole("checkbox", {
+      name: "Universities",
+    });
+    this.certificationDetails = this.page.getByRole("textbox", {
+      name: "Certification Details (Optional)",
+    });
+    this.uploadFile = this.page.locator('input[type="file"]');
+    this.submitButton = this.page.getByRole("button", { name: "Submit" });
+
+    // dasboard navigation
+
+    this.dashboardPage = this.page.getByAltText("Logo");
+  }
+
+  async navigateToLandingPage(): Promise<void> {
+    await this.page.goto(`${this.baseUrl}`);
+  }
+
+  async enterUserDetails(dataTable: DataTable): Promise<void> {
+    const user = dataTable.hashes()[0];
+
+    await this.firstName.fill(user.firstname);
+    await this.lastName.fill(user.lastName);
+    await this.emailField.fill(user.Email);
+    await this.phoneNumber.fill(user.phoneNumber);
+    await this.passwordSelector.fill(user.password);
+    await this.confirmPassword.fill(user.confirmPassword);
+
+    await Promise.all([
+      this.page.waitForLoadState("networkidle"),
+      this.nextButtonSelector.click(),
+    ]);
+  }
+
+  async enterAgencyDetails(dataTable: any) {
+    const agency = dataTable.hashes()[0];
+
+    await this.agencyName.fill(agency.agencyName);
+    await this.agencyRole.fill(agency.Role);
+    await this.agencyEmail.fill(agency.agencyEmail);
+    await this.agencyWebsite.fill(agency.website);
+    await this.agencyAddress.fill(agency.address);
+    await this.regionOfOperation.fill(agency.regionOfOperation);
+    await Promise.all([
+      this.page.waitForLoadState("networkidle"),
+      this.nextSubmitButton.click(),
+    ]);
+  }
+  async enterExperienceDetails(dataTable: any) {
+    const exp = dataTable.hashes()[0];
+
+    await this.yearsOfExperience.fill(exp.yearsOfExperience);
+    await this.recuritedStudentNo.fill(exp.numberOfStudents);
+    await this.focusArea.fill(exp.focusArea);
+    await this.successMetrics.fill(exp.successMetrics);
+    await this.careerCounselingCheckbox.fill(exp.serviceProvided);
+    await Promise.all([
+      this.page.waitForLoadState("networkidle"),
+      this.experienceNextBtn,
+    ]);
+  }
+  async enterBusinessDetails(dataTable: any) {
+    const biz = dataTable.hashes()[0];
+
+    await this.businessRegistrationNum.fill(biz.RegistrationNum);
+    await this.preferredCountries.fill(biz.PreferredCountry);
+    await this.preferredInstitutionType.fill(biz.PreferredInstitution);
+    await this.certificationDetails.fill(biz.certificationDetails);
+    await Promise.all([
+      this.page.waitForLoadState("networkidle"),
+      this.submitButton,
+    ]);
+  }
+
+  async dashboardSection(): Promise<void> {
+    await expect(this.dashboardPage).toBeVisible();
   }
 }
