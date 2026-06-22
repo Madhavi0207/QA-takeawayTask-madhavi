@@ -19,6 +19,8 @@ When(
       this.signUpPage = new SignUpPage(this.page);
     }
     await this.signUpPage.enterUserDetails(dataTable);
+
+    this.signUpPage.oneTimeCodeVerification();
   },
 );
 When(

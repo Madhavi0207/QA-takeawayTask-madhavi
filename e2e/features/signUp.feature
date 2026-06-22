@@ -8,7 +8,7 @@ Given The user is in the sign up page
 
 When The user enters the given details for user details:
  | firstname | lastName | Email                     | phoneNumber | password    | confirmPassword |
- | Madhavi   | Paudel   | madhavipaudel86@gmail.com | 9866758577  | Madhavi@123 | Madhavi@123     |
+ | Madhavi   | Paudel   | fepid21787@dyleris.com    | 9866758077  | Madhavi@123 | Madhavi@123     |
 And The user enters the agency details:
  | agencyName  | Role    | agencyEmail             | website         | address | regionOfOperation |
  | KanyaCampus | Student | info@kanyacampus.edu.np | kanyacampus.com | Pokhara | Nepal             | 

@@ -61,12 +61,10 @@ export class SignUpPage {
 
     // Get started with policy terms and condition
 
-    this.getStartedButton = this.page.getByRole("button", {
+    this.getStartedButton = this.page.getByRole("link", {
       name: "Get Started",
     });
-    this.policyCheckBox = this.page.getByRole("checkbox", {
-      name: "I agree to theTerms of Service and Privacy Policy",
-    });
+    this.policyCheckBox = this.page.locator('button[role="checkbox"]');
 
     this.contiuneButton = this.page.getByRole("button", { name: "Continue" });
 
@@ -161,6 +159,12 @@ export class SignUpPage {
       this.page.waitForLoadState("networkidle"),
       this.nextButtonSelector.click(),
     ]);
+  }
+
+  async oneTimeCodeVerification(): Promise<void> {
+    await this.codeVerification.click();
+    await this.page.keyboard.type("");
+    await this.page.keyboard.press("Enter");
   }
 
   async enterAgencyDetails(dataTable: DataTable) {
