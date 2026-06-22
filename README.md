@@ -24,13 +24,21 @@ Clone the repository:
 
 ```bash
 git clone <repository-url>
-cd <project-name>
+cd <QA-takeawayTask-madhavi>
 ```
 
 Install dependencies:
 
 ```bash
-npm install
+npm init -y
+npm install -D @playwright/test
+npx playwright
+
+npm install - typescript ts-node
+npx tsc --init
+
+npm install -D @cucumber/cucumber
+npm install --save-dev @cucumber/pretty-formatter
 ```
 
 ## Running Tests
@@ -38,18 +46,12 @@ npm install
 Run all tests:
 
 ```bash
-npm test
-```
-
-Or run cucumber tests directly:
-
-```bash
-npx cucumber-js
+npm run test:e2e
 ```
 
 ## Project Structure
 
-```text
+```
 project-root/
 │
 ├── e2e/
@@ -71,19 +73,20 @@ The automation covers:
 * Form validation
 * Document upload
 * OTP verification
-* Business information submission
 
 ## Assumptions
 
-* Test data is generated dynamically where possible.
-* Application environment is accessible during execution.
-* Email verification may require a test mailbox service.
+- The application under test is available and accessible during test execution.
+- Test data is defined in feature files and used as input for test scenarios.
+- No external mailbox service is used for email verification in this automation.
 
 ## Known Limitations
 
-* OTP automation depends on mailbox availability.
-* Some test data may need updating if application data changes.
+* Email verification requires a little mannual intervention.
+* Email and phone numbers must be updated manually when re-running tests, as the system does not allow reuse of the same credentials.
+  
 ## Demo Video
+https://github.com/user-attachments/assets/8bc43cb2-125d-4ced-bedc-94bdd5b4f2f9
 
 
 ## Author
