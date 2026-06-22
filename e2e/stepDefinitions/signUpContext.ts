@@ -19,7 +19,15 @@ When(
       this.signUpPage = new SignUpPage(this.page);
     }
     await this.signUpPage.enterUserDetails(dataTable);
+  },
+);
 
+When(
+  "the user enters one time verification code",
+  async function (this: CustomWorld) {
+    if (!this.signUpPage) {
+      this.signUpPage = new SignUpPage(this.page);
+    }
     this.signUpPage.oneTimeCodeVerification();
   },
 );

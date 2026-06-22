@@ -7,8 +7,11 @@ Scenario: Sign up
 Given The user is in the sign up page
 
 When The user enters the given details for user details:
- | firstname | lastName | Email                     | phoneNumber | password    | confirmPassword |
- | Madhavi   | Paudel   | fepid21787@dyleris.com    | 9866758077  | Madhavi@123 | Madhavi@123     |
+ | firstname | lastName | Email                 | phoneNumber | password   | confirmPassword |
+ | Madhavi   | Paudel   | papoxa9232@hotkev.com | 9823180082  | Hellow@123 | Hellow@123      |
+
+And the user enters one time verification code 
+
 And The user enters the agency details:
  | agencyName  | Role    | agencyEmail             | website         | address | regionOfOperation |
  | KanyaCampus | Student | info@kanyacampus.edu.np | kanyacampus.com | Pokhara | Nepal             | 

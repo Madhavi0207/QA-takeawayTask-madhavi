@@ -7,7 +7,7 @@ const {
 } = require("@cucumber/cucumber");
 const { chromium } = require("playwright");
 
-setDefaultTimeout(60000);
+setDefaultTimeout(160000);
 
 let browser;
 

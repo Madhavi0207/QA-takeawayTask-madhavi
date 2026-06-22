@@ -1,5 +1,6 @@
 import { DataTable } from "@cucumber/cucumber";
 import { expect, Locator, Page } from "playwright/test";
+import path from "path";
 
 export class SignUpPage {
   private readonly page: Page;
@@ -32,6 +33,7 @@ export class SignUpPage {
   private readonly agencyWebsite: Locator;
   private readonly agencyAddress: Locator;
   private readonly regionOfOperation: Locator;
+  private readonly locationOptions: Locator;
   private readonly nextSubmitButton: Locator;
 
   //Professional Experience
@@ -47,6 +49,7 @@ export class SignUpPage {
 
   private readonly businessRegistrationNum: Locator;
   private readonly preferredCountries: Locator;
+  private readonly preferredCountriesOptions: Locator;
   private readonly preferredInstitutionType: Locator;
   private readonly certificationDetails: Locator;
   private readonly uploadFile: Locator;
@@ -93,10 +96,15 @@ export class SignUpPage {
     this.agencyEmail = this.page.locator('input[name="agency_email"]');
     this.agencyWebsite = this.page.getByRole("textbox", { name: "Website" });
     this.agencyAddress = this.page.locator('input[name="agency_address"]');
-    this.regionOfOperation = this.page.getByRole("combobox", {
-      name: "Select Your Region of Operation",
+    this.regionOfOperation = this.page.locator(
+      "text=Select Your Region of Operation",
+    );
+    this.locationOptions = this.page.locator(
+      'div[role="dialog"] span:text-is("Nepal")',
+    );
+    this.nextSubmitButton = this.page.getByRole("button", {
+      name: "Next",
     });
-    this.nextSubmitButton = this.page.getByRole("button", { name: "Next" });
 
     //Professional Details
 
@@ -124,6 +132,7 @@ export class SignUpPage {
     this.preferredCountries = this.page.getByRole("combobox", {
       name: "Preferred Countries",
     });
+    this.preferredCountriesOptions = this.page.getByRole("dialog");
     this.preferredInstitutionType = this.page.getByRole("checkbox", {
       name: "Universities",
     });
@@ -175,7 +184,8 @@ export class SignUpPage {
     await this.agencyEmail.fill(agency.agencyEmail);
     await this.agencyWebsite.fill(agency.website);
     await this.agencyAddress.fill(agency.address);
-    await this.regionOfOperation.fill(agency.regionOfOperation);
+    await this.regionOfOperation.click();
+    await this.locationOptions.click();
     await Promise.all([
       this.page.waitForLoadState("networkidle"),
       this.nextSubmitButton.click(),
@@ -188,19 +198,28 @@ export class SignUpPage {
     await this.recuritedStudentNo.fill(exp.numberOfStudents);
     await this.focusArea.fill(exp.focusArea);
     await this.successMetrics.fill(exp.successMetrics);
-    await this.careerCounselingCheckbox.fill(exp.serviceProvided);
+    await this.careerCounselingCheckbox.click();
     await Promise.all([
       this.page.waitForLoadState("networkidle"),
       this.experienceNextBtn,
     ]);
   }
   async enterBusinessDetails(dataTable: DataTable) {
+    const filePath = path.resolve(
+      __dirname,
+      "../sample-file-upload/sample-file.pdf",
+    );
     const biz = dataTable.hashes()[0];
 
     await this.businessRegistrationNum.fill(biz.RegistrationNum);
-    await this.preferredCountries.fill(biz.PreferredCountry);
-    await this.preferredInstitutionType.fill(biz.PreferredInstitution);
-    await this.certificationDetails.fill(biz.certificationDetails);
+    await this.preferredCountries.click();
+    await this.preferredCountriesOptions
+      .filter({ hasText: "Australia" })
+      .click();
+    await this.preferredInstitutionType.click();
+    await this.certificationDetails.click();
+    await this.uploadFile.click();
+    await this.page.setInputFiles('input[type="file"]', filePath);
     await Promise.all([
       this.page.waitForLoadState("networkidle"),
       this.submitButton,
