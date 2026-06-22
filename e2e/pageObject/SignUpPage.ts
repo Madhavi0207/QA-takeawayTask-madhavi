@@ -39,6 +39,7 @@ export class SignUpPage {
   //Professional Experience
 
   private readonly yearsOfExperience: Locator;
+  private readonly yearsValue: Locator;
   private readonly recuritedStudentNo: Locator;
   private readonly focusArea: Locator;
   private readonly successMetrics: Locator;
@@ -111,7 +112,9 @@ export class SignUpPage {
     this.yearsOfExperience = this.page.getByRole("combobox", {
       name: "Years of Experience",
     });
-    page.locator('input[type="file"]');
+    this.yearsValue = this.page
+      .locator('[role="option"]')
+      .filter({ hasText: "10+ years" });
     this.recuritedStudentNo = this.page.getByRole("spinbutton", {
       name: "Number of Students Recruited Annually",
     });
@@ -139,7 +142,9 @@ export class SignUpPage {
     this.certificationDetails = this.page.getByRole("textbox", {
       name: "Certification Details (Optional)",
     });
-    this.uploadFile = this.page.locator('input[type="file"]');
+    this.uploadFile = this.page
+      .locator('[class*="flex"] svg.h-8.w-8.text-primary')
+      .nth(0);
     this.submitButton = this.page.getByRole("button", { name: "Submit" });
 
     // dasboard navigation
@@ -194,20 +199,21 @@ export class SignUpPage {
   async enterExperienceDetails(dataTable: DataTable) {
     const exp = dataTable.hashes()[0];
 
-    await this.yearsOfExperience.fill(exp.yearsOfExperience);
+    await this.yearsOfExperience.click();
+    await this.yearsValue.click();
     await this.recuritedStudentNo.fill(exp.numberOfStudents);
     await this.focusArea.fill(exp.focusArea);
     await this.successMetrics.fill(exp.successMetrics);
     await this.careerCounselingCheckbox.click();
     await Promise.all([
       this.page.waitForLoadState("networkidle"),
-      this.experienceNextBtn,
+      this.experienceNextBtn.click(),
     ]);
   }
   async enterBusinessDetails(dataTable: DataTable) {
     const filePath = path.resolve(
-      __dirname,
-      "../sample-file-upload/sample-file.pdf",
+      process.cwd(),
+      "sample-file-upload/sample-file.pdf",
     );
     const biz = dataTable.hashes()[0];
 
@@ -217,12 +223,12 @@ export class SignUpPage {
       .filter({ hasText: "Australia" })
       .click();
     await this.preferredInstitutionType.click();
-    await this.certificationDetails.click();
+    await this.certificationDetails.fill(biz.certificationDetails);
     await this.uploadFile.click();
     await this.page.setInputFiles('input[type="file"]', filePath);
     await Promise.all([
       this.page.waitForLoadState("networkidle"),
-      this.submitButton,
+      this.submitButton.click(),
     ]);
   }
 }
