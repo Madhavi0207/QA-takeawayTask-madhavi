@@ -51,16 +51,6 @@ Install Playwright browsers:
 ```bash
 npx playwright install
 ```
-
-## Configuration
-
-Create a `.env` file in the project root and add your Mailosaur credentials:
-
-```env
-MAILOSAUR_API_KEY=your_api_key
-MAILOSAUR_SERVER_ID=your_server_id
-```
-
 ## Running Tests
 
 Run all tests:
