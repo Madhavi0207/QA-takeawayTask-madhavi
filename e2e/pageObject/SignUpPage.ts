@@ -1,6 +1,7 @@
 import { DataTable } from "@cucumber/cucumber";
 import { expect, Locator, Page } from "playwright/test";
 import path from "path";
+import { MailosaurHelper } from "../utilities/mailosaur";
 
 export class SignUpPage {
   private readonly page: Page;
@@ -58,6 +59,7 @@ export class SignUpPage {
 
   // navigation to profile page
   public readonly dashboardPage: Locator;
+  testEmail = MailosaurHelper.generateEmail();
 
   constructor(page: Page) {
     this.page = page;
@@ -153,7 +155,10 @@ export class SignUpPage {
   }
 
   async navigateToLandingPage(): Promise<void> {
-    await this.page.goto(`${this.baseUrl}`);
+    await this.page.goto("https://authorized-partner.vercel.app/", {
+      waitUntil: "domcontentloaded",
+      timeout: 60000,
+    });
     await this.getStartedButton.click();
     await this.policyCheckBox.click();
     await this.contiuneButton.click();
@@ -164,7 +169,7 @@ export class SignUpPage {
 
     await this.firstName.fill(user.firstname);
     await this.lastName.fill(user.lastName);
-    await this.emailField.fill(user.Email);
+    await this.emailField.fill(this.testEmail);
     await this.phoneNumber.fill(user.phoneNumber);
     await this.passwordSelector.fill(user.password);
     await this.confirmPassword.fill(user.confirmPassword);
@@ -176,8 +181,9 @@ export class SignUpPage {
   }
 
   async oneTimeCodeVerification(): Promise<void> {
-    await this.codeVerification.click();
-    await this.page.keyboard.type("");
+    const otp = MailosaurHelper.getOTP(this.testEmail);
+
+    await this.codeVerification.fill(await otp);
     await this.page.keyboard.press("Enter");
   }
 

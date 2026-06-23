@@ -9,6 +9,7 @@ export class CustomWorld extends World {
   page!: Page;
 
   signUpPage!: SignUpPage;
+  generateEmail!: String;
 
   users: Record<string, unknown> = {};
   meetings: Record<string, unknown> = {};
