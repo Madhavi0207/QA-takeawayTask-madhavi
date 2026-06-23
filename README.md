@@ -59,6 +59,9 @@ Run all tests:
 npm run test:e2e
 ```
 
+## Note
+The .env file is pushed only for convenience and shouldn't be done otherwise without a strong encryption.
+
 ## Project Structure
 
 ```text
@@ -103,6 +106,7 @@ The automation covers:
 
 * Test emails are dependent on Mailosaur service availability.
 * Some test data (such as email addresses or phone numbers) may need to be unique for each execution based on application constraints.
+
 
 ## Demo Video
 
