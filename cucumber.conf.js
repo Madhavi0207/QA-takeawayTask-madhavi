@@ -6,6 +6,7 @@ const {
   setDefaultTimeout,
 } = require("@cucumber/cucumber");
 const { chromium } = require("playwright");
+require("dotenv").config();
 
 setDefaultTimeout(160000);
 
