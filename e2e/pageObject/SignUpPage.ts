@@ -2,6 +2,7 @@ import { DataTable } from "@cucumber/cucumber";
 import { expect, Locator, Page } from "playwright/test";
 import path from "path";
 import { MailosaurHelper } from "../utilities/mailosaur";
+import { generatePhoneNumber } from "../../phoneNumber/PhoneNum";
 
 export class SignUpPage {
   private readonly page: Page;
@@ -60,7 +61,7 @@ export class SignUpPage {
   // navigation to profile page
   public readonly dashboardPage: Locator;
   testEmail = MailosaurHelper.generateEmail();
-
+  phone = generatePhoneNumber();
   constructor(page: Page) {
     this.page = page;
     this.baseUrl = "https://authorized-partner.vercel.app/";
@@ -170,7 +171,7 @@ export class SignUpPage {
     await this.firstName.fill(user.firstname);
     await this.lastName.fill(user.lastName);
     await this.emailField.fill(this.testEmail);
-    await this.phoneNumber.fill(user.phoneNumber);
+    await this.phoneNumber.fill(this.phone);
     await this.passwordSelector.fill(user.password);
     await this.confirmPassword.fill(user.confirmPassword);
 
