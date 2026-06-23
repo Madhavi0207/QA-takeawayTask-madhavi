@@ -7,8 +7,8 @@ Scenario: Sign up
 Given The user is in the sign up page
 
 When The user enters the given details for user details:
- | firstname | lastName | Email                  | phoneNumber | password   | confirmPassword |
- | Madhavi   | Paudel   | xotedag802@hotkev.com  | 9810232180  | Hellow@123 | Hellow@123      |
+ | firstname | lastName | phoneNumber | password   | confirmPassword |
+ | Madhavi   | Paudel   | 9818221181  | Hellow@123 | Hellow@123      |
 
 And the user enters one time verification code 
 
