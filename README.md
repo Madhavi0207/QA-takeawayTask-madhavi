@@ -2,7 +2,9 @@
 
 ## Overview
 
-This project contains automated end-to-end tests built using Playwright, Cucumber, and TypeScript.
+This project contains automated end-to-end tests for the QA Intern Position task at Vrit Technologies.
+
+The automation framework is built using Playwright, Cucumber, and TypeScript following the Page Object Model (POM) design pattern. The complete user registration flow, including email OTP verification through Mailosaur, is fully automated.
 
 ## Technologies Used
 
@@ -10,13 +12,13 @@ This project contains automated end-to-end tests built using Playwright, Cucumbe
 * Cucumber
 * TypeScript
 * Node.js
+* Mailosaur
 
 ## Prerequisites
 
 Make sure the following are installed:
 
 * Node.js (v18 or later)
-* npm
 
 ## Installation
 
@@ -24,21 +26,39 @@ Clone the repository:
 
 ```bash
 git clone <repository-url>
-cd <QA-takeawayTask-madhavi>
+cd QA-takeawayTask-madhavi
 ```
 
-Install dependencies:
+Install project dependencies collectively:
 
 ```bash
-npm init -y
-npm install -D @playwright/test
-npx playwright
+npm install
+```
 
-npm install - typescript ts-node
-npx tsc --init
+Or install dependencies one by one:
 
-npm install -D @cucumber/cucumber
+```bash
+npm install @playwright/test
+npm install typescript ts-node
+npm install @cucumber/cucumber
 npm install --save-dev @cucumber/pretty-formatter
+npm install mailosaur
+npm install dotenv
+```
+
+Install Playwright browsers:
+
+```bash
+npx playwright install
+```
+
+## Configuration
+
+Create a `.env` file in the project root and add your Mailosaur credentials:
+
+```env
+MAILOSAUR_API_KEY=your_api_key
+MAILOSAUR_SERVER_ID=your_server_id
 ```
 
 ## Running Tests
@@ -51,7 +71,7 @@ npm run test:e2e
 
 ## Project Structure
 
-```
+```text
 project-root/
 │
 ├── e2e/
@@ -71,23 +91,32 @@ The automation covers:
 
 * User registration flow
 * Form validation
+* Email OTP verification using Mailosaur
 * Document upload
-* OTP verification
+* Business profile creation
+
+## Framework Features
+
+* Playwright with TypeScript
+* Cucumber BDD implementation
+* Page Object Model (POM)
+* Data-driven testing using feature files
+* Automated email OTP retrieval and verification
+* Reusable utility methods and test components
 
 ## Assumptions
 
-- The application under test is available and accessible during test execution.
-- Test data is defined in feature files and used as input for test scenarios.
-- No external mailbox service is used for email verification in this automation.
+* Application environment is available and accessible during test execution.
+* Valid Mailosaur credentials are configured before running the tests.
 
 ## Known Limitations
 
-* Email verification requires a little mannual intervention.
-* Email and phone numbers must be updated manually when re-running tests, as the system does not allow reuse of the same credentials.
-  
-## Demo Video
-https://github.com/user-attachments/assets/8bc43cb2-125d-4ced-bedc-94bdd5b4f2f9
+* Test emails are dependent on Mailosaur service availability.
+* Some test data (such as email addresses or phone numbers) may need to be unique for each execution based on application constraints.
 
+## Demo Video
+
+https://github.com/user-attachments/assets/a65bd78f-a576-4c35-b0de-804fefea0f0e
 
 ## Author
 
